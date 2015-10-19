@@ -49,7 +49,9 @@ class FileLoggerPreparation {
 
     private void createLogHandler(Logger logger, File logFolder, String logpattern, String logExtention) throws IOException {
         logger.addHandler(new SimpleFileHandler(logFolder, logpattern, logExtention));
-        logger.setLevel(Level.INFO);
+        if (logger.getLevel() == null) {
+            logger.setLevel(Level.INFO);
+        }
     }
 
     private void createLogFolder(File logFolder) {

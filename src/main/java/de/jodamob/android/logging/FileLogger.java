@@ -1,6 +1,7 @@
 package de.jodamob.android.logging;
 
 import java.io.File;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import android.content.Context;
 
@@ -11,20 +12,25 @@ public class FileLogger extends RedirectedLogging {
     static final String FILE_EXTENSION = ".log";
     
     private final FileLoggerPreparation fileCreator;
-    private final Logger logger = Logger.getLogger("");
+    private final Logger logger;
 
     public FileLogger(Context context) {
         this(context, new SilentLogger());
     }
     
-    public static File getLogFileContent(Context context) {
-        return new FileLoggerCollector(context).getAsSingleLogfile();
-    }
-    
     public FileLogger(final Context context, final Logging redirectLog) {
+        this(context, redirectLog, Level.INFO);
+    }
+
+    public FileLogger(final Context context, final Logging redirectLog, Level logLevel) {
         super(redirectLog);
+        logger = Logger.getLogger("");
         this.fileCreator = new FileLoggerPreparation(context);
         prepareInBackground();
+    }
+
+    public static File getLogFileContent(Context context) {
+        return new FileLoggerCollector(context).getAsSingleLogfile();
     }
 
     @Override
